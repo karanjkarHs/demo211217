@@ -8,8 +8,8 @@ from pathlib import Path
 path.append(str(Path(__file__).resolve().parent.parent))
 import requests
 import json
-from orm.testdb.models.banks_uk_events import BanksUkEvent
-from orm.testdb.models.banks_uk import BanksUk
+from orm.testdb.models.banks_uk_events import banksUkEvent
+from orm.testdb.models.banks_uk import banksUk
 from datetime import datetime
 from collections import OrderedDict
 
@@ -22,7 +22,7 @@ class EngGovBankMain():
         try:
             response_data = requests.get(url)
             self.bankDetailsJson = json.loads(response_data.text)
-            print(response_data.status_code)
+            return response_data.status_code
 
         except Exception as error:  
             print(f"Error in EngGovBankMain.getBankDataFromURL : {error}")
@@ -30,14 +30,14 @@ class EngGovBankMain():
     def insertBankEventsDataIntoDb(self, division):
         """ Insert or update bank details into the db"""
         try:
-            bankDivId = BanksUk.getbankLocationId(division)
+            bankDivId = banksUk.getbankLocationId(division)
             england_and_wales = self.bankDetailsJson.get(division).get("events")
             for events in england_and_wales:
                 title = events.get("title")
                 date = events.get("date")
                 notes = events.get("notes")
                 bunting = events.get("bunting")
-                BanksUkEvent.insertIntoBanksUkEvents(bankDivId, title, date, notes, bunting)
+                banksUkEvent.insertIntoBanksUkEvents(bankDivId, title, date, notes, bunting)
             return "Success"   
 
         except Exception as error:  
@@ -60,11 +60,11 @@ class EngGovBankMain():
     def fetchDivisionEvents(self, division):
         """ Retrive bank details"""
         try:
-            result = BanksUkEvent.getEventsForDivision(division)
+            result = banksUkEvent.getEventsForDivision(division)
             events = []
             for event in result:
                 rowData = OrderedDict()
-                rowData["title"] = event.title
+                rowData["title"] = event.tittle
                 rowData["date"] = event.date
                 rowData["notes"] = event.notes
                 rowData["bunting"] = event.bunting
@@ -103,6 +103,10 @@ def retriveEvents(division):
 
 
 if __name__ == '__main__':
-    obj = EngGovBankMain()
-    obj.getBankDataFromURL('https://www.gov.uk/bank-holidays.json')
-    print(obj.bankDetailsJson)
+    #obj = EngGovBankMain()
+    #obj.getBankDataFromURL('https://www.gov.uk/bank-holidays.json')
+    #print(obj.bankDetailsJson)
+    #loadData('https://www.gov.uk/bank-holidays.json')
+    r = retriveEvents('england-and-wales')
+    print(json.dumps(r))
+

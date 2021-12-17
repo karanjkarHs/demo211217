@@ -51,8 +51,9 @@ class BanksUkEvent(Base):
             print(f"Error in insertIntoBanksUkEvents : {error}")    
 
 
+banksUkEvent = BanksUkEvent() 
+
 if __name__ == '__main__':
-    obj = BanksUkEvent()
-    r =   obj.getEventsForDivision('test1')   
+    r =   banksUkEvent.getEventsForDivision('england-and-wales')   
     for i in r:
-        print(i.tittle)    
+        print(i.title)    

@@ -42,8 +42,10 @@ class BanksUk(Base):
             print(f"Error in BanksUk : {error}")                  
 
 
+banksUk = BanksUk() 
 
 if __name__ == '__main__':
     obj = BanksUk()
-    r = obj.insertIntoBanksUk('test1','test1')
+    #r = obj.insertIntoBanksUk('test1','test1')
+    r = obj.getbankLocationId("england-and-wales")
     print(r)
