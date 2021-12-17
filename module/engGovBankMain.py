@@ -5,8 +5,6 @@
 ###############################################
 from sys import path
 from pathlib import Path
-
-from requests.exceptions import RetryError
 path.append(str(Path(__file__).resolve().parent.parent))
 import requests
 import json
@@ -40,7 +38,7 @@ class EngGovBankMain():
                 notes = events.get("notes")
                 bunting = events.get("bunting")
                 BanksUkEvent.insertIntoBanksUkEvents(bankDivId, title, date, notes, bunting)
-            return    
+            return "Success"   
 
         except Exception as error:  
             print(f"Error in EngGovBankMain.insertBankEventsDataIntoDb : {error}")
@@ -86,7 +84,8 @@ def loadData(url):
         else:
             print("Error occured in getting the json from url")
             return
-        obj.insertBankDataIntoDb()    
+        result = obj.insertBankDataIntoDb()   
+        return result 
 
 
     except Exception as error:  
