@@ -38,7 +38,7 @@ class EngGovBankMain():
                 notes = events.get("notes")
                 bunting = events.get("bunting")
                 banksUkEvent.insertIntoBanksUkEvents(bankDivId, title, date, notes, bunting)
-            return "Success"   
+            return    
 
         except Exception as error:  
             print(f"Error in EngGovBankMain.insertBankEventsDataIntoDb : {error}")
@@ -52,7 +52,7 @@ class EngGovBankMain():
             self.insertBankEventsDataIntoDb("scotland")
             # for northern-ireland
             self.insertBankEventsDataIntoDb("northern-ireland")                                   
-            return    
+            return "Success"    
 
         except Exception as error:  
             print(f"Error in EngGovBankMain.insertBankDataIntoDb : {error}")
@@ -67,7 +67,10 @@ class EngGovBankMain():
                 rowData["title"] = event.tittle
                 rowData["date"] = event.date
                 rowData["notes"] = event.notes
-                rowData["bunting"] = event.bunting
+                if event.bunting == "1":
+                    rowData["bunting"] = True
+                elif event.bunting == "0":
+                    rowData["bunting"] = False    
                 events.append(rowData)
 
             return events    

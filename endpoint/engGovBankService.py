@@ -17,9 +17,11 @@ class EngGovBankService(Resource):
         payload = retriveEvents(division)
         return payload , 200 if payload else 404
 
+class EngGovBankDataLoad(Resource):
 
     def put(self):
         """ Add or update bank deatils"""
         request_data = request.get_json()
-        status = loadData(request_data)
+        url = request_data['url']
+        status = loadData(url)
         return status , 200 if status else 404
